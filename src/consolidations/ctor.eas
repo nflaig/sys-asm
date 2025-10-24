@@ -1,6 +1,6 @@
   ;; Store 0xff..ff as a temporary excess value to avoid requests being queued
   ;; before the fork.
-  push 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  push (1<<256)-1    ; [excess]
   push 0             ; [slot, excess]
   sstore             ; []
 
