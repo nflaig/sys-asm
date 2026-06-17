@@ -32,3 +32,5 @@ jobs:
       - name: Run Forge tests
         run: forge test -vvv
         id: test
+      - name: Check bytecode hash
+        run: scripts/checkhash.sh
