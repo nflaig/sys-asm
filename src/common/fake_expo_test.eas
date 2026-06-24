@@ -2,33 +2,32 @@
 ;;; takes input from calldata, returns result to caller
 
     ;; get word count for input
-    push1 32           ; [32]
-    calldatasize       ; [size, 32]
-    div                ; [words]
-    push1 1            ; [1, words]
-    swap1              ; [words, 1]
+    push 1             ; [1]
+    push 32            ; [32, 1]
+    calldatasize       ; [size, 32, 1]
+    div                ; [words, 1]
     sub                ; [words-1]
 
-loop:
+loop:                  ; [i, ..]
     ;; bound check - wait until overflow to quit
-    dup1               ; [i, i]
+    dup1               ; [i, i, ..]
     push32 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    eq                 ; [i == 2**256, i]
-    jumpi @end         ; [i]
+    eq                 ; [i == 2**256, i, ..]
+    jumpi @end         ; [i, ..]
 
     ;; perform load
-    dup1               ; [i, i]
-    push1 32           ; [32, i, i]
-    mul                ; [i*32, i]
-    calldataload       ; [x_i, i]
-    swap1              ; [i, x_i]
-    push1 1            ; [1, i, x_i]
-    swap1              ; [i, 1, x_i]
-    sub                ; [i--, words, x_i]
+    dup1               ; [i, i, ..]
+    push 32            ; [32, i, i, ..]
+    mul                ; [i*32, i, ..]
+    calldataload       ; [x_i, i, ..]
+    swap1              ; [i, x_i, ..]
+    push 1             ; [1, i, x_i, ..]
+    swap1              ; [i, 1, x_i, ..]
+    sub                ; [i=i-1, x_i, ..]
     jump @loop
 
 end:
-    pop                ; []
+    pop                ; [..]
 
 #include "fake_expo.eas"
 
