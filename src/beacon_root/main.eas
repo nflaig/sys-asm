@@ -113,7 +113,7 @@ submit:
     ;; time_index = (time % buflen).
     push BUFLEN        ; [buflen]
     timestamp          ; [time, buflen]
-    mod                ; [time % buflen]
+    mod                ; [time_index]
 
     ;; Write timestamp into storage slot at time_index.
     timestamp          ; [time, time_index]
