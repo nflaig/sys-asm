@@ -12,25 +12,29 @@ env:
 
 jobs:
   check:
-    name: Foundry project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
       - uses: actions/setup-go@v4
-      - name: Install Geas
-        run: go install github.com/fjl/geas/cmd/geas@latest
       - uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
+
+      - name: Build bytecode
+        run: |
+          make build
+        id: build
+
       - name: Run Forge build
+        # this is mostly here so that warnings from building forge-std
+        # do not appear in the test output
         run: |
           forge --version
           forge build --sizes
-        id: build
-      - name: Run Forge tests
-        run: forge test -vvv
+
+      - name: Run contract tests
+        run: |
+          make test
         id: test
-      - name: Check bytecode hash
-        run: scripts/checkhash.sh
