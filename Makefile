@@ -48,7 +48,7 @@ clean:
 	rm -f "bin/geas-$(GEAS_VERSION)"
 	rm -fr bytecode
 
-ifeq ($(GEAS),"bin/geas-$(GEAS_VERSION)")
+ifeq ($(GEAS),bin/geas-$(GEAS_VERSION))
 $(GEAS):
 	mkdir -p bin
 	env "GOBIN=$(CURDIR)/bin" go install github.com/fjl/geas/cmd/geas@v$(GEAS_VERSION)
